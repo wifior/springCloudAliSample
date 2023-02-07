@@ -1,9 +1,9 @@
 server:
-  port: 8012
+  port: 8011
 
 spring:
   application:
-    name: stock-service  #应用名称，本名称会被nacos作为服务名称
+    name: product-service  #应用名称，本名称会被nacos作为服务名称
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
@@ -13,9 +13,3 @@ spring:
         namespace: public
         # service: 同spring.application.name
         # group:
-#日志局部配置
-feign:
-  client:
-    config:
-      product-service:
-        loggerLevel: BASIC

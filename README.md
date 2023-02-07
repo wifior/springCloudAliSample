@@ -78,6 +78,115 @@ nacos 【端口8848】是一个集服务发现、服务配置、服务管理的�
 
 - 编写接口
 
+order项目中
+```java
+package com.soopen.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * name rest接口所在的服务名
+ * path 所在的controller
+ */
+@FeignClient(name = "stock-service",path = "/stock")
+public interface StockFeignService {
+
+    //与rest接口对应的方法
+    @RequestMapping("get")
+    String getStock();
+
+
+    /*@RequestMapping("get")
+    public String getStock() {
+        System.out.println("查询库存");
+        return "查询库存"+port;
+    }*/
+}
+
+```
+
+stock项目中
+```java
+package com.soopen.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@FeignClient(name = "order-service",path = "/order")
+public interface OrderFeignService {
+
+    @RequestMapping("get")
+    String getOrder();
+}
+
+```
+
+- 注入
+
+在orderController中注入
+
+```java
+ @Autowired
+ StockFeignService stockFeignService;
+```
+
+在stockController中注入
+
+```java
+@Autowired
+OrderFeignService orderFeignService;
+```
+
+并在项目启动类中加入注解
+
+```java
+@EnableFeignClients
+```
+
+### 6.feign日志配置
+
+- 配置类的方式
+
+1.全局配置
+
+```java
+/**
+ * 全局配置添加@Configuration
+ */
+@Configuration
+public class FeignConfig {
+
+    @Bean
+    public Logger.Level feignLoggerLevel(){
+        return Logger.Level.FULL;
+    }
+}
+```
+
+2.局部配置
+
+在具体的类上添加configuration= FeignConfig.class
+
+3.注意
+
+要在application.yml中配置项目的日志级别
+
+```yaml
+logging:
+  level:
+    com.soopen.feign: debug
+```
+
+4.注解方式
+
+```yaml
+
+```
+
+
+
+
 
 
 

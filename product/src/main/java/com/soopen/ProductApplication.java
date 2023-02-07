@@ -6,12 +6,13 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * Hello world!
+ *
  */
 @SpringBootApplication
 @EnableFeignClients
-public class OrderApplication{
-
+public class ProductApplication
+{
     public static void main( String[] args ){
-        SpringApplication.run(OrderApplication.class,args);
+        SpringApplication.run(ProductApplication.class,args);
     }
 }

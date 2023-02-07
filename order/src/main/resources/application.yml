@@ -13,3 +13,6 @@ spring:
         namespace: public
         # service: 同spring.application.name
         # group:
+logging:
+  level:
+    com.soopen.feign: debug
