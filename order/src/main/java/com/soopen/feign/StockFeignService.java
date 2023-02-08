@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * name rest接口所在的服务名
  * path 所在的controller
  */
-@FeignClient(name = "stock-service",path = "/stock",configuration= FeignConfig.class)
+@FeignClient(name = "stock-service",path = "/stock",configuration= FeignConfig.class,fallback = StockFeignServiceFallback.class)
 public interface StockFeignService {
 
     //与rest接口对应的方法

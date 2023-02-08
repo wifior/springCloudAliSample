@@ -7,9 +7,9 @@
 
 - 服务 8000开始
 
-- nacas
+- nacas 8848
 
-- 
+- sentinel 8858
 
 ### 1.在父项目中添加所依赖的版本
 
@@ -235,8 +235,110 @@ feign:
           com.soopen.interceptor.FeignAuthReuestInterceptor
 ```
 
+### 7.组件sentinel
 
+sentinel是面向分布式服务架构的流量控制组件，主要以流量为切入点，从限流、流量整形、熔断降级、系统负载保护、热点防护等多个维度来帮助开发者保障微服务的稳定性。
 
+- 下载安装
 
+https://sentinelguard.io/zh-cn/docs/introduction.html
+
+- 整合springcloud
+
+1.添加依赖
+
+```xml
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+</dependency>
+```
+
+2.yml配置，设置sentinel控制台地址
+
+```yaml
+  sentinel:
+      transport:
+        dashboard: 127.0.0.1:8858
+```
+
+- 自定义流控信息
+
+要被监控就要加上@SentinelResource
+
+```java
+ @RequestMapping("/flow")
+@SentinelResource(value = "flow",blockHandler = "flowBlockHandler")
+public String flow(){
+    return "正常访问";
+}
+
+public String flowBlockHandler(BlockException e){
+    return "自定义流控信息";
+}
+```
+
+- 统一异常处理
+
+```java
+public class MyBlockExceptionHandler implements BlockExceptionHandler
+```
+
+- sentinel整合openfeign做降级处理
+
+1.yml中配置
+
+```yml
+feign:
+  sentinel:
+    enabled: true  #添加对feign的支持
+```
+
+2.创建类StockFeignServiceFallback
+
+```java
+@Component
+public class StockFeignServiceFallback implements StockFeignService{
+    @Override
+    public String getStock() {
+        return "降级了！！！";
+    }
+
+    @Override
+    public String reduceStock() {
+        return "降级了！！！";
+    }
+}
+```
+
+3.在openfeign的类中加入fallback = StockFeignServiceFallback.class
+
+```java
+@FeignClient(name = "stock-service",path = "/stock",configuration= FeignConfig.class,fallback = StockFeignServiceFallback.class)
+public interface StockFeignService {
+
+    //与rest接口对应的方法
+    @RequestMapping("get")
+    String getStock();
+
+    @RequestMapping("reduce")
+    String reduceStock();
+}
+```
+
+### 8.sentinel持久化
+
+1.引入依赖
+
+```yaml
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-datasource-nacos</artifactId>
+</dependency>
+```
+
+2.nacos中新建配置
+
+3.
 
 

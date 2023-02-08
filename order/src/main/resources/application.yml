@@ -13,6 +13,16 @@ spring:
         namespace: public
         # service: 同spring.application.name
         # group:
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8858
+      datasource:
+        flow-rule:
+          server-addr: 127.0.0.1:8848
+          username: nacos
+          password: nacos
+          dataId: order-sentinel-flow-rule
+          rule-type: flow
 logging:
   level:
     com.soopen.feign: debug
@@ -25,3 +35,5 @@ feign:
         readTimeout: 10000     #请求处理超时间，默认5s
         requestInterceptors[0]: #配置拦截器
           com.soopen.interceptor.FeignAuthReuestInterceptor
+  sentinel:
+    enabled: true  #整合sentinel
