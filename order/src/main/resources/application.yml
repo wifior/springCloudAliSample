@@ -16,3 +16,12 @@ spring:
 logging:
   level:
     com.soopen.feign: debug
+
+feign:
+  client:
+    config:
+      order-service: #服务名
+        connectTimeout: 5000   #连接超时时间，默认2S
+        readTimeout: 10000     #请求处理超时间，默认5s
+        requestInterceptors[0]: #配置拦截器
+          com.soopen.interceptor.FeignAuthReuestInterceptor

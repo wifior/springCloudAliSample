@@ -181,10 +181,59 @@ logging:
 4.注解方式
 
 ```yaml
-
+#日志局部配置
+feign:
+  client:
+    config:
+      product-service:
+        loggerLevel: BASIC
 ```
 
+- 超时配置
 
+```
+@Configuration
+public class FeignConfig {
+
+    @Bean
+    public Request.Options options(){
+        return new Request.Options(5L, TimeUnit.SECONDS, 10L,TimeUnit.SECONDS,true);
+    }
+}
+```
+
+```yaml
+feign:
+  client:
+    config:
+      order-service: #服务名
+        connectTimeout: 5000   #连接超时时间，默认2S
+        readTimeout: 10000     #请求处理超时间，默认5s
+```
+
+- openfeign中自定义拦截器
+
+1.添加FeignAuthReuestInterceptor类
+
+2.在FeignConfig中添加
+
+```java
+@Bean
+public FeignAuthReuestInterceptor feignAuthReuestInterceptor(){
+    return new FeignAuthReuestInterceptor();
+}
+```
+
+3.也可以在yml文件中配置
+
+```yaml
+feign:
+  client:
+    config:
+      order-service: #服务名
+        requestInterceptors[0]: #配置拦截器
+          com.soopen.interceptor.FeignAuthReuestInterceptor
+```
 
 
 
