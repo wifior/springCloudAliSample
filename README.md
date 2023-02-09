@@ -341,4 +341,37 @@ public interface StockFeignService {
 
 3.
 
+### 9.Seate集成
+
+Seata 是一款开源的分布式事务解决方案，致力于提供高性能和简单易用的分布式事务服务。Seata 将为用户提供了 AT、TCC、SAGA 和 XA 事务模式，为用户打造一站式的分布式解决方案。 
+
+- 下载安装
+
+https://github.com/seata/seata/releases/download/v1.5.2/seata-server-1.5.2.zip
+
+```xml
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+</dependency>
+```
+
+- 配置存储为数据库
+
+conf文件夹下application.yml中修改，具体可参考application.example.yml
+
+- 注册使用nacos
+
+http://seata.io/zh-cn/docs/ user/registry/nacos.html
+
+- nacos参数配置
+
+http://seata.io/zh-cn/docs/user/configuration/nacos.html
+
+- 建表语句
+
+https://github.com/seata/seata/blob/master/script/server/db/mysql.sql
+
+
+
 
